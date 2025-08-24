@@ -22,7 +22,6 @@ router.post("/", async (req, res) => {
     let perDayCharges = car.perDayCharges;
     let perWeekCharges = car.perWeekCharges;
     let perMonthCharges = car.perMonthCharges;
-    console.log(car.discountedPercentage);
     if (car.discountedPercentage && car.discountedPercentage > 0) {
       const discountFactor = 1 - car.discountedPercentage / 100;
       perDayCharges = Math.round(car.perDayCharges * discountFactor);
@@ -88,6 +87,8 @@ router.post("/", async (req, res) => {
       basePrice,
     });
     let savedBooking = await booking.save();
+    car.status = "Booked";
+    await car.save();
     res.status(200).json({
       msg: "Booking Created Successfully!",
       bookingId: bookingCounter.bookingNumber,
