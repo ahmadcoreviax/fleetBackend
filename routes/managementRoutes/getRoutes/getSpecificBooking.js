@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
     let id = req.body.id;
     let booking = await Booking.findOne({ bookingNumber: id }).populate(
       "carId",
-      "name licensePlate color"
+      "name licensePlate color discountedPercentage"
     ); // car ka data
 
     if (!booking) return res.status(404).json({ msg: "No Booking Exists!" });

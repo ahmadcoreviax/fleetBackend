@@ -18,6 +18,17 @@ router.post("/", async (req, res) => {
     if (!car) {
       return res.status(404).json({ msg: "Car not found!" });
     }
+    // 🔥 Discounted prices calculate karo (agar discount > 0 hai)
+    let perDayCharges = car.perDayCharges;
+    let perWeekCharges = car.perWeekCharges;
+    let perMonthCharges = car.perMonthCharges;
+    console.log(car.discountedPercentage);
+    if (car.discountedPercentage && car.discountedPercentage > 0) {
+      const discountFactor = 1 - car.discountedPercentage / 100;
+      perDayCharges = Math.round(car.perDayCharges * discountFactor);
+      perWeekCharges = Math.round(car.perWeekCharges * discountFactor);
+      perMonthCharges = Math.round(car.perMonthCharges * discountFactor);
+    }
 
     // 3️⃣ Addons details fetch
     let addonsTotal = 0;
@@ -40,18 +51,18 @@ router.post("/", async (req, res) => {
     // Months
     if (remainingDays >= 30) {
       const months = Math.floor(remainingDays / 30);
-      totalPrice += months * car.perMonthCharges;
+      totalPrice += months * perMonthCharges;
       remainingDays = remainingDays % 30;
     }
 
     // Weeks
     if (remainingDays >= 7) {
       const weeks = Math.floor(remainingDays / 7);
-      totalPrice += weeks * car.perWeekCharges;
+      totalPrice += weeks * perWeekCharges;
       remainingDays = remainingDays % 7;
     }
     if (remainingDays > 0) {
-      totalPrice += remainingDays * car.perDayCharges;
+      totalPrice += remainingDays * perDayCharges;
     }
 
     // Addons ka total add karo
