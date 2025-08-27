@@ -3,6 +3,9 @@ const app = express();
 const cors = require("cors");
 const DBCON = require("./Database/DB.js");
 const cookieParser = require("cookie-parser");
+// const helmet = require("helmet");
+// Helmet enable
+// app.use(helmet());
 require("dotenv").config();
 DBCON();
 app.use(express.json());
@@ -33,8 +36,10 @@ const updateBooking = require("./routes/managementRoutes/updateBooking.js");
 const deleteCar = require("./routes/managementRoutes/deleteCar.js");
 const bookingAnalytics = require("./routes/managementRoutes/getRoutes/bookingAnalytics.js");
 const auth = require("./routes/managementRoutes/Auth.js");
+const accessVerify = require("./Controller/accessVerify.js");
 // files imports
 // routes registration
+app.use("/api/accessVerify", accessVerify);
 app.use("/api/mng/addBrand", addBrand);
 app.use("/api/mng/addCategory", addCategory);
 app.use("/api/mng/addCar", addCar);
@@ -54,7 +59,9 @@ app.use("/api/getSpecificCar", getSpecificCar);
 app.use("/api/mng/getSpecificBooking", getSpecificBooking);
 app.use("/api/mng/getSpecificBookingAdmin", getSpecificBookingAdmin);
 app.use("/api/getAllCars", getAllCars);
-
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", msg: "Server is running fine!" });
+});
 // ++++++++++++++++++++++++++++++++++++++  get routs
 // routes registratione
 // "0.0.0.0",

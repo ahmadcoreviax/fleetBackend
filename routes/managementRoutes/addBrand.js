@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Brand = require("../../Models/Brand.model.js");
-router.post("/", async (req, res) => {
+const authVerify = require("../../Middleware/authVerify.middleware.js");
+router.post("/", authVerify, async (req, res) => {
   try {
     const { brandName, brandSlug } = req.body;
     const brand = new Brand({

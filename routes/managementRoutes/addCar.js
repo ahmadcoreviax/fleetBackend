@@ -5,6 +5,7 @@ const Car = require("../../Models/Car.model.js");
 const cloudinary = require("cloudinary").v2;
 const mongoose = require("mongoose");
 const fs = require("fs");
+const authVerify = require("../../Middleware/authVerify.middleware.js");
 
 // Cloudinary config
 cloudinary.config({
@@ -42,7 +43,7 @@ const uploadToCloudinary = (filePath, folder = "car_inventory") => {
     fs.createReadStream(filePath).pipe(stream);
   });
 };
-router.post("/", upload.array("carImages"), async (req, res) => {
+router.post("/", authVerify, upload.array("carImages"), async (req, res) => {
   try {
     const {
       name,

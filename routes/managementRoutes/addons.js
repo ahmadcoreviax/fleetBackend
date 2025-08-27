@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Addons = require("../../Models/Addons.model.js");
-
+const authVerify = require("../../Middleware/authVerify.middleware.js");
 // Add or Update Addons
-router.post("/add", async (req, res) => {
+router.post("/add", authVerify, async (req, res) => {
   try {
     let data = req.body.payload.addons; // frontend array of addons
 

@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Category = require("../../Models/Category.model.js");
-router.post("/", async (req, res) => {
+const authVerify = require("../../Middleware/authVerify.middleware.js");
+router.post("/", authVerify, async (req, res) => {
   try {
     const { categoryName, categorySlug } = req.body;
     const category = new Category({

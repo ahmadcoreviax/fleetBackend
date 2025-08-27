@@ -1,12 +1,20 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-
+const rateLimit = require("express-rate-limit");
 dotenv.config();
 const router = express.Router();
+const loginLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 5, // max 5 requests in 5 minutes
+  message: {
+    status: 429,
+    msg: "Too many login attempts, please try again later.",
+  },
+});
 
 // POST /api/login
-router.post("/", (req, res) => {
+router.post("/", loginLimiter, (req, res) => {
   try {
     const { username, password } = req.body.data;
     // Simple check

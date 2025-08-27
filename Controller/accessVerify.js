@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
+const express = require("express");
+const router = express.Router();
 
-const authVerify = (req, res, next) => {
-  const token = req.cookies.token;
+router.post("/", (req, res) => {
+  const token = req.body.token;
   if (!token) {
     return res.status(401).json({ login: false, msg: "No token provided" });
   }
@@ -9,9 +11,9 @@ const authVerify = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-    next();
+    return res.status(200).json({ login: true });
   } catch (err) {
     return res.status(403).json({ login: false, msg: "Invalid token" });
   }
-};
-module.exports = authVerify;
+});
+module.exports = router;

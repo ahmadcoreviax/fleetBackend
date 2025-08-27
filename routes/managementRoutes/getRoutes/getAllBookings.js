@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Booking = require("../../../Models/Booking.model.js");
+const authVerify = require("../../../Middleware/authVerify.middleware.js");
 
-router.get("/", async (req, res) => {
+router.get("/", authVerify, async (req, res) => {
   try {
     let bookings = await Booking.find({}).sort({ createdAt: -1 });
     if (!bookings) return res.status(404).json({ msg: "No Bookings Found!" });

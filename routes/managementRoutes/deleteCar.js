@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Car = require("../../Models/Car.model.js");
+const authVerify = require("../../Middleware/authVerify.middleware.js");
 const cloudinary = require("cloudinary").v2;
 
 // Cloudinary config
@@ -9,9 +10,8 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
 // DELETE Car by ID
-router.post("/", async (req, res) => {
+router.post("/", authVerify, async (req, res) => {
   try {
     const { id, pass } = req.body;
     if (pass == "fleetxDelCode") {

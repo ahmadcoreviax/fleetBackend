@@ -5,6 +5,7 @@ const Car = require("../../Models/Car.model.js");
 const cloudinary = require("cloudinary").v2;
 const mongoose = require("mongoose");
 const fs = require("fs");
+const authVerify = require("../../Middleware/authVerify.middleware.js");
 
 // Cloudinary config
 cloudinary.config({
@@ -12,7 +13,6 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
 // Multer setup (diskStorage)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -44,7 +44,7 @@ const uploadToCloudinary = (filePath, folder = "car_inventory") => {
 };
 
 // ✅ UPDATE CAR ROUTE
-router.post("/:id", upload.array("carImages"), async (req, res) => {
+router.post("/:id", authVerify, upload.array("carImages"), async (req, res) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
