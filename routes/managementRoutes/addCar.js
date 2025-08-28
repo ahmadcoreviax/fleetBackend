@@ -6,6 +6,7 @@ const cloudinary = require("cloudinary").v2;
 const mongoose = require("mongoose");
 const fs = require("fs");
 const authVerify = require("../../Middleware/authVerify.middleware.js");
+const redis = require("../../Utils/redis.js");
 
 // Cloudinary config
 cloudinary.config({
@@ -93,7 +94,9 @@ router.post("/", authVerify, upload.array("carImages"), async (req, res) => {
     });
 
     const savedCar = await car.save();
-
+    // 1️⃣ Invalidate related caches
+    // await redis.del("available_cars");
+    // await redis.del("featured_cars");
     res.status(200).json({
       msg: "Car added successfully",
       car: savedCar,
