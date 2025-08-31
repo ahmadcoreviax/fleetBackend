@@ -44,13 +44,13 @@ const uploadToCloudinary = (filePath, folder = "car_inventory") => {
 };
 
 // ✅ UPDATE CAR ROUTE
+// authVerify
 router.post("/:id", authVerify, upload.array("carImages"), async (req, res) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ msg: "Invalid car ID" });
     }
-
     // --- Body fields ---
     const {
       name,

@@ -12,8 +12,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    credentials: true,
-    origin: process.env.ORIGIN,
+    // credentials: true,
+    // origin: "*",
+    // origin: process.env.ORIGIN,
   })
 );
 app.use(cookieParser());
@@ -27,6 +28,7 @@ const getFeaturedCars = require("./routes/workingRoutes/getFeaturedCars.js");
 const getSpecificCar = require("./routes/workingRoutes/getSpecificCar.js");
 const getSpecificBooking = require("./routes/managementRoutes/getRoutes/getSpecificBooking.js");
 const getAllCars = require("./routes/workingRoutes/getAllCars.js");
+const getAllCarsForAdmin = require("./routes/managementRoutes/getRoutes/getAllCarsForAdmin.js");
 const getAllBookings = require("./routes/managementRoutes/getRoutes/getAllBookings.js");
 const getSpecificBookingAdmin = require("./routes/managementRoutes/getRoutes/getSpecificBookingAdmin.js");
 const createBooking = require("./routes/managementRoutes/createBooking.js");
@@ -37,6 +39,7 @@ const deleteCar = require("./routes/managementRoutes/deleteCar.js");
 const bookingAnalytics = require("./routes/managementRoutes/getRoutes/bookingAnalytics.js");
 const auth = require("./routes/managementRoutes/Auth.js");
 const accessVerify = require("./Controller/accessVerify.js");
+const getBannerCar = require("./routes/workingRoutes/getBannerCar.js");
 // files imports
 // routes registration
 app.use("/api/accessVerify", accessVerify);
@@ -51,6 +54,7 @@ app.use("/api/mng/addons", addons);
 app.use("/api/mng/auth", auth);
 // ++++++++++++++++++++++++++++++++++++++ get routes
 app.use("/api/mng/getAllCategories", getAllCategories);
+app.use("/api/getBannerCar", getBannerCar);
 app.use("/api/mng/getAllBrands", getAllBrands);
 app.use("/api/mng/getBookingAnalytics", bookingAnalytics);
 app.use("/api/mng/getAllBookings", getAllBookings);
@@ -59,6 +63,7 @@ app.use("/api/getSpecificCar", getSpecificCar);
 app.use("/api/mng/getSpecificBooking", getSpecificBooking);
 app.use("/api/mng/getSpecificBookingAdmin", getSpecificBookingAdmin);
 app.use("/api/getAllCars", getAllCars);
+app.use("/api/mng/getAllCarsForAdmin", getAllCarsForAdmin);
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", msg: "Server is running fine!" });
 });
